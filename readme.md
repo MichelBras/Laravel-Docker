@@ -10,6 +10,11 @@ This will build all the needed containers. This commando will run the containers
 docker-compose up -d
 ```
 
+Generate an application key
+```
+docker-compose exec app php artisan key:generate
+```
+
 In the `mysql` container a laravel user will be added, because you dont want to operate as a root user in the database. So first you will need to open an interactive prompt with:
 
 ``` 

@@ -1,8 +1,10 @@
 # Containerized Laravel project
 
-This is a Laravel install that runs on containers. To run the containers you will need Docker Compose installed on your machine. If you dont have have Docker Compose installed refer to [this](https://docs.docker.com/compose/install/) manual.
+This is a laravel setup with Nginx and MySQL. To run the containers you will need Docker Compose installed on your machine. If you dont have have Docker Compose installed refer to [this](https://docs.docker.com/compose/install/) manual.
 
 ## Installation
+
+Before building all the containers some small database configuration is needed. In the `docker-compose.yaml` file the root access for the database is configured. Change `MYSQL_DATABASE` and `MYSQL_ROOT_PASSWORD` to your desire. In the `.env` the `MYSQL_DATABASE` should be the same, but the `DB_PASSWORD` is the passsword that you will use when creating a laraveluser in the database in one of the next steps. 
 
 This will build all the needed containers. This commando will run the containers `daemonised`. Without the flag you will see the logging printed to the terminal.
 
@@ -11,11 +13,12 @@ docker-compose up -d
 ```
 
 Generate an application key
+
 ```
 docker-compose exec app php artisan key:generate
 ```
 
-In the `mysql` container a laravel user will be added, because you dont want to operate as a root user in the database. So first you will need to open an interactive prompt with:
+You have to add a laravel user in the `mysql` container, because you dont want to operate as a root user in the database. So first you will need to open an interactive prompt with:
 
 ``` 
 docker-compose exec db bash
@@ -60,18 +63,35 @@ While creating this environment I had some problems and I list al the problems I
 1. Docker Laravel Mysql: could not find driver
 I fixed this problem after removing all my containers, images and volumes. WARNING! these commandos will remove ALL, so dont copy these commandos if you dont want to delete all your containers, images or volumes!!
 
+Remove all your images.
 ``` 
-docker image rm $(docker image ls -q) to remove all your images.
-docker rm $(docker ps -a -q) -f to remove all your containers.
+docker image rm $(docker image ls -q) 
+```
+Remove all your containers
+```
+docker rm $(docker ps -a -q) -f
+```
+Remove all your volumes
+```
 docker volume prune to remove all your volumes.
+```
+Build the container
+```
 docker-compose up -d to build all your containers.
+```
+Clearing all the config caches
+```
 docker-compose exec app php artisan config:cache for clearing all the config caches.
 ```
 
 2. PDOException::("SQLSTATE[HY000][1045] Access denied for user 'laraveluser'@'app.laravel-container_app-network' (using password: YES)")
 I fixed this problem after checking the `.env` in my `app` container
 
-``` 
-docker-compose exec app vi .env this is the `.env` that is binded to your local `.env`. But you can always check if all the variables are accurate.
+Check your `.env` of de `app` container to chck if this file is binded propperly.
+```
+docker-compose exec app vi .env
+```
+Clearing all the config caches
+```
 docker-compose exec app php artisan config:cache for clearing all the config caches.
 ```

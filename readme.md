@@ -44,10 +44,10 @@ You can check if you have access as the new user with:
 mysql -u 'DB_USERNAME' -p 'DB_PASSWORD'
 ```
 
-With acess to the database as the new user you can migrate the database.
+With acess to the database as the new user you can migrate and seed the database.
 
 ``` 
-docker-compose exec app php artisan migrate
+docker-compose exec app php artisan migrate --seed
 ```
 
 You can also use tinker in the container

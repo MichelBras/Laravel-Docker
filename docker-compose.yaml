@@ -54,6 +54,19 @@ services:
     networks:
       - app-network
 
+  #Redis Service
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    tty: true
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/config/redis.conf:/redis.conf
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:

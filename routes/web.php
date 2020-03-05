@@ -12,6 +12,9 @@
 */
 
 Route::get('/', function () {
+    // $redis = app()->make('redis');
+    // $redis->set('key1', 'foo');
+    // return $redis->get('key1');
     return view('welcome');
 });
 
